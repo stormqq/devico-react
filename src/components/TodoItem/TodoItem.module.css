@@ -1,0 +1,75 @@
+li {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ededed;
+  }
+
+.checkName {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.editInput {
+    width: 300px;
+    /* padding: 16px 60px 16px 0px; */
+    /* box-shadow: inset 0px 0px 4px -1px rgba(0, 0, 0, 0.7); */
+    background-color: #eee;
+    font-size: 24px;
+    border: none;
+}
+
+.editInput:focus {
+    outline: none;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #cdcdcd;
+}
+
+.inputError {
+    border: 2px solid red;
+    animation: shake 0.8s;
+}
+
+.inputErrorMessage {
+    color: red;
+    font-size: 14px;
+}
+
+.deleteButton {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.todoItem:hover .deleteButton {
+  opacity: 1;
+}
+
+@keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+  
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }

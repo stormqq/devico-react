@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
-import './styles.css'
+// мемоизация usecallback +
+// add handle to funcs +
+// implement localstorage +
+// folder str +
+import "./App.css";
+import TodosApp from "./components/TodosApp/TodosApp";
+
 function App() {
   return (
-    <div>
-      <h1>Devico React</h1>
+    <div className="container">
+      <h1 className="logo">todos</h1>
+      <TodosApp />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
