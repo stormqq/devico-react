@@ -11,7 +11,7 @@ function TodoItem({ todo, setTodos, deleteTodo, toggleCompleted }) {
     setIsEditing(true);
     setEditedText(todo.text);
   };
-d
+
   const handleChangeEditing = (e) => {
     setEditedText(e.target.value);
   };
