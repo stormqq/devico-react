@@ -9,7 +9,7 @@ function NewTodoInput({ addTodo }) {
       e.target.value = "";
     }
   };
-  console.log("NewTodoInput rendered");
+  
   return (
     <>
       <input

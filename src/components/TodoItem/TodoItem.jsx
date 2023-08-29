@@ -1,8 +1,6 @@
 import { memo, useState } from "react";
 import styles from "./TodoItem.module.css";
 
-// import funcs from useTodos ?
-
 function TodoItem({ todo, setTodos, deleteTodo, toggleCompleted }) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputError, setInputError] = useState("");
