@@ -14,8 +14,8 @@ function TodoList({ todos, setTodos, currFilter, deleteTodo, toggleCompleted }) 
       }
     });
   }, [todos, currFilter]);
-  console.log('TodoList rendered')
-  return (
+  
+    return (
     <ul className={styles.todoList}>
       {filteredTodos.map((todo) => (
         <TodoItem

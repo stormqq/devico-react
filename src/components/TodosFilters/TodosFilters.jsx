@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import styles from './TodosFilters.module.css'
 function TodosFilters({ todos, changeFilter, deleteCompleted}) {
   const totalActive = useMemo(() => {
@@ -10,7 +10,7 @@ function TodosFilters({ todos, changeFilter, deleteCompleted}) {
     return todos.some((todo) => todo.completed);
   }
   , [todos]);
-  console.log('TodosFilters rendered')
+  
   return (
     <div className={styles.filtersContainer}>
         <span className={styles.totalActive}>{totalActive} items left</span>

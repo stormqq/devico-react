@@ -20,7 +20,7 @@ function TodoApp() {
 
   return (
     <main className={styles.todosContainer}>
-      {todos.length > 0 && (
+      {todos.length > 0 ? (
         <span
           className={`${styles.selectAll} ${
             allTodosCompleted && styles.selectedAll
@@ -29,7 +29,7 @@ function TodoApp() {
         >
           ❯
         </span>
-      )}
+      ) : null}
       <NewTodoInput addTodo={handleAddTodo} />
       <TodoList
         todos={todos}
@@ -38,13 +38,13 @@ function TodoApp() {
         deleteTodo={handleDeleteTodo}
         toggleCompleted={handleToggleCompleted}
       />
-      {todos.length > 0 && (
+      {todos.length > 0 ? (
         <TodosFilters
           todos={todos}
           deleteCompleted={handleDeleteCompleted}
           changeFilter={handleChangeFilter}
         />
-      )}
+      ) : null}
     </main>
   );
 }

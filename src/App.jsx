@@ -1,7 +1,3 @@
-// мемоизация usecallback +
-// add handle to funcs +
-// implement localstorage +
-// folder str +
 import "./App.css";
 import TodosApp from "./components/TodosApp/TodosApp";
 
