@@ -1,8 +1,18 @@
 import { memo, useState } from "react";
 import styles from "./TodoItem.module.css";
+import API from "../../services/api";
 
-function TodoItem({ todo, setTodos, deleteTodo, toggleCompleted }) {
+const api = new API();
+
+function TodoItem({
+  todo,
+  saveEditedTodo,
+  setTodos,
+  deleteTodo,
+  toggleCompleted,
+}) {
   const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(todo.text);
   const [inputError, setInputError] = useState("");
 
   const handleEdit = () => {
@@ -26,11 +36,7 @@ function TodoItem({ todo, setTodos, deleteTodo, toggleCompleted }) {
 
   const handleSave = () => {
     setIsEditing(false);
-    setTodos((prevTodos) =>
-      prevTodos.map((todoItem) =>
-        todoItem.id === todo.id ? { ...todoItem, text: editedText } : todoItem
-      )
-    );
+    saveEditedTodo(todo.id, editedText);
     setInputError("");
   };
 
@@ -59,6 +65,9 @@ function TodoItem({ todo, setTodos, deleteTodo, toggleCompleted }) {
           <input
             type="text"
             value={editedText}
+            minLength={3}
+            maxLength={20}
+            autoFocus
             onChange={handleChangeEditing}
             onBlur={handleClickOutside}
             onKeyDown={handlePressEnter}

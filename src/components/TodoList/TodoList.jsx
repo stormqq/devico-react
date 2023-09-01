@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import TodoItem from '../TodoItem/TodoItem';
 import styles from './TodoList.module.css';
 
-function TodoList({ todos, setTodos, currFilter, deleteTodo, toggleCompleted }) {
+function TodoList({ todos, saveEditedTodo, setTodos, currFilter, deleteTodo, toggleCompleted }) {
   const filteredTodos = useMemo(() => {
     return todos.filter((todo) => {
       if (currFilter === 'completed') {
@@ -21,6 +21,7 @@ function TodoList({ todos, setTodos, currFilter, deleteTodo, toggleCompleted }) 
         <TodoItem
           key={todo.id}
           todo={todo}
+          saveEditedTodo={saveEditedTodo}
           setTodos={setTodos}
           deleteTodo={deleteTodo}
           toggleCompleted={toggleCompleted}
