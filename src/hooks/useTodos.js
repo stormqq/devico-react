@@ -1,36 +1,61 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
+import API from "../services/api";
+
+const api = new API();
 
 function useTodos() {
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("");
+  const [currError, setCurrError] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("todos")) {
-      setTodos(JSON.parse(localStorage.getItem("todos")));
-    }
+    api.getTodos().then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
   const handleAddTodo = useCallback((text) => {
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { id: Date.now(), text, completed: false },
-    ]);
+    api.addTodo(text).then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
   }, []);
 
   const handleDeleteTodo = useCallback((id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    api.deleteTodo(id).then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
   }, []);
 
   const handleToggleCompleted = useCallback((id) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    api.toggleCompleted(id).then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
+  }, []);
+
+  const handleSaveEditedTodo = useCallback((id, text) => {
+    api.updateText(id, text).then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
   }, []);
 
   const handleChangeFilter = useCallback((newFilter) => {
@@ -38,14 +63,23 @@ function useTodos() {
   }, []);
 
   const handleSelectAll = useCallback(() => {
-    const allTodosCompleted = todos.every((todo) => todo.completed);
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => ({ ...todo, completed: !allTodosCompleted }))
-    );
+    api.selectAll().then((res) => {
+      if (res.error) {
+        setCurrError(res.error);
+      } else {
+        setTodos(res);
+      }
+    });
   }, [todos]);
 
   const handleDeleteCompleted = useCallback(() => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+    api.deleteCompleted().then((res) => {
+      if (res instanceof Error) {
+        setCurrError(res.message);
+        console.log("deleteComplError: ", currError);
+      }
+      setTodos(res);
+    });
   }, []);
 
   const allTodosCompleted = useMemo(() => {
@@ -59,10 +93,13 @@ function useTodos() {
     handleAddTodo,
     handleDeleteTodo,
     handleToggleCompleted,
+    handleSaveEditedTodo,
     handleChangeFilter,
     handleSelectAll,
     handleDeleteCompleted,
     allTodosCompleted,
+    currError,
+    setCurrError,
   };
 }
 

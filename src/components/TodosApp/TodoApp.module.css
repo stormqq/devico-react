@@ -31,3 +31,7 @@
 .todoInput:focus {
     outline: none;
 }
+
+.inputErr {
+    font-size: 24px;
+}
