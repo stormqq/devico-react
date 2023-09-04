@@ -1,16 +1,20 @@
 import { memo, useState } from "react";
 import styles from "./TodoItem.module.css";
 import API from "../../services/api";
+import { useZusTodos } from "../../services/store";
 
 const api = new API();
 
-function TodoItem({
-  todo,
-  saveEditedTodo,
-  setTodos,
-  deleteTodo,
-  toggleCompleted,
-}) {
+function TodoItem({todo}) {
+
+  const {saveEditedTodo, deleteTodo, toggleCompleted} = useZusTodos((state) => {
+    return {
+      saveEditedTodo: state.saveEditedTodo,
+      deleteTodo: state.deleteTodo,
+      toggleCompleted: state.toggleCompleted
+    }
+  });
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
   const [inputError, setInputError] = useState("");
