@@ -1,7 +1,10 @@
 import { memo } from "react";
 import styles from "./NewTodoInput.module.css";
+import { useZusTodos } from "../../services/store";
 
-function NewTodoInput({ addTodo }) {
+function NewTodoInput() {
+  const addTodo = useZusTodos((state) => state.addTodo);
+
   const handleSubmitTodo = (e) => {
     const text = e.target.value;
     if (e.key === "Enter" && text.trim() !== "" && text.length >= 3) {
@@ -9,7 +12,7 @@ function NewTodoInput({ addTodo }) {
       e.target.value = "";
     }
   };
-  
+
   return (
     <>
       <input

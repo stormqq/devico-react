@@ -1,16 +1,27 @@
 import { memo, useMemo } from 'react';
 import TodoItem from '../TodoItem/TodoItem';
 import styles from './TodoList.module.css';
+import { useFilter, useZusTodos } from '../../services/store';
 
-function TodoList({ todos, saveEditedTodo, setTodos, currFilter, deleteTodo, toggleCompleted }) {
+function TodoList() {
+  const {todos} = useZusTodos((state) => {
+    return {
+      todos: state.todos,
+      currFilter: state.filter
+    }
+  });
+
+  const currFilter = useFilter((state) => state.filter)
+
   const filteredTodos = useMemo(() => {
     return todos.filter((todo) => {
-      if (currFilter === 'completed') {
-        return todo.completed;
-      } else if (currFilter === 'active') {
-        return !todo.completed;
-      } else {
-        return true;
+      switch (currFilter) {
+        case "completed":
+          return todo.completed;
+        case "active":
+          return !todo.completed;
+        default:
+          return true;
       }
     });
   }, [todos, currFilter]);
@@ -21,10 +32,6 @@ function TodoList({ todos, saveEditedTodo, setTodos, currFilter, deleteTodo, tog
         <TodoItem
           key={todo.id}
           todo={todo}
-          saveEditedTodo={saveEditedTodo}
-          setTodos={setTodos}
-          deleteTodo={deleteTodo}
-          toggleCompleted={toggleCompleted}
         />
       ))}
     </ul>
