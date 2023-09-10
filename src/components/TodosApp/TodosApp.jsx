@@ -3,29 +3,24 @@ import TodoList from "../TodoList/TodoList";
 import NewTodoInput from "../NewTodoInput/NewTodoInput";
 import TodosFilters from "../TodosFilters/TodosFilters";
 import { useEffect, useMemo } from "react";
-import { useZusTodos } from "../../services/store";
-
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTodos, selectAll } from "../../redux/features/todosSlice/todosThunks";
+import { removeError } from "../../redux/features/todosSlice/todosSlice";
+import { getAllTodosSelector } from "../../redux/selectors/todosSelectors";
+import { getCurrErrorSellector } from "../../redux/selectors/currErrorSelector";
 function TodoApp() {
-  const { todos, currError, removeError, fetchTodos, selectAll } = useZusTodos(
-    (state) => {
-      return {
-        todos: state.todos,
-        currError: state.currError,
-        removeError: state.removeError,
-        fetchTodos: state.fetchTodos,
-        selectAll: state.selectAll,
-      };
-    }
-  );
+  const dispatch = useDispatch();
+  const todos = useSelector(getAllTodosSelector);
+  const currError = useSelector(getCurrErrorSellector);
 
   useEffect(() => {
-    fetchTodos();
+    dispatch(fetchTodos());
   }, []);
-
+  
   useEffect(() => {
     if (currError) {
       const errorTimeout = setTimeout(() => {
-        removeError();
+        dispatch(removeError());
       }, 2000);
       return () => {
         clearTimeout(errorTimeout);
@@ -36,8 +31,6 @@ function TodoApp() {
   const allTodosCompleted = useMemo(() => {
     return todos.every((todo) => todo.completed);
   }, [todos]);
-
-  console.log("currError: ", currError);
 
   return (
     <>
@@ -52,7 +45,7 @@ function TodoApp() {
             className={`${styles.selectAll} ${
               allTodosCompleted && styles.selectedAll
             }`}
-            onClick={selectAll}
+            onClick={() => dispatch(selectAll())}
           >
             ❯
           </span>
