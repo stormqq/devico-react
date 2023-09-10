@@ -1,17 +1,13 @@
 import { memo, useMemo } from 'react';
 import TodoItem from '../TodoItem/TodoItem';
 import styles from './TodoList.module.css';
-import { useFilter, useZusTodos } from '../../services/store';
+import { useSelector } from 'react-redux';
+import { getAllTodosSelector } from '../../redux/selectors/todosSelectors';
+import { getFilterSelector } from '../../redux/selectors/filterSelectors';
 
 function TodoList() {
-  const {todos} = useZusTodos((state) => {
-    return {
-      todos: state.todos,
-      currFilter: state.filter
-    }
-  });
-
-  const currFilter = useFilter((state) => state.filter)
+  const todos = useSelector(getAllTodosSelector);
+  const currFilter = useSelector(getFilterSelector);
 
   const filteredTodos = useMemo(() => {
     return todos.filter((todo) => {

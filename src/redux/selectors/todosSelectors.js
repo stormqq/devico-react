@@ -1,0 +1,1 @@
+export const getAllTodosSelector = (state) => state.todos.todos;

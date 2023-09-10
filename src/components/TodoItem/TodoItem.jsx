@@ -1,20 +1,10 @@
 import { memo, useState } from "react";
 import styles from "./TodoItem.module.css";
-import API from "../../services/api";
-import { useZusTodos } from "../../services/store";
+import { useDispatch } from "react-redux";
+import { deleteTodo, saveEditedTodo } from "../../redux/features/todosSlice/todosThunks";
 
-const api = new API();
-
-function TodoItem({todo}) {
-
-  const {saveEditedTodo, deleteTodo, toggleCompleted} = useZusTodos((state) => {
-    return {
-      saveEditedTodo: state.saveEditedTodo,
-      deleteTodo: state.deleteTodo,
-      toggleCompleted: state.toggleCompleted
-    }
-  });
-
+function TodoItem({ todo }) {
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
   const [inputError, setInputError] = useState("");
@@ -40,7 +30,12 @@ function TodoItem({todo}) {
 
   const handleSave = () => {
     setIsEditing(false);
-    saveEditedTodo(todo.id, editedText);
+    console.log('todo id: ', todo.id);
+    console.log('editedText: ', editedText);
+    dispatch(saveEditedTodo({
+      id: todo.id,
+      text: editedText
+    }));
     setInputError("");
   };
 
@@ -63,7 +58,12 @@ function TodoItem({todo}) {
         <input
           type="checkbox"
           checked={todo.completed}
-          onChange={() => toggleCompleted(todo.id)}
+          onChange={() => {
+            console.log('todo.id: ', todo.id);
+            dispatch(saveEditedTodo({
+              id: todo.id,
+            }));
+          }}
         />
         {isEditing ? (
           <input
@@ -89,7 +89,12 @@ function TodoItem({todo}) {
           <span className={styles.inputErrorMessage}>{inputError}</span>
         )}
       </div>
-      <span className={styles.deleteButton} onClick={() => deleteTodo(todo.id)}>
+      <span className={styles.deleteButton} onClick={() => {
+        console.log('deleting id: ', todo.id)
+        dispatch(deleteTodo({
+          id: todo.id
+        }))
+      }}>
         ❌
       </span>
     </li>
