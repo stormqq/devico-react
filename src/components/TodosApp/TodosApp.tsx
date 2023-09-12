@@ -3,16 +3,18 @@ import TodoList from "../TodoList/TodoList";
 import NewTodoInput from "../NewTodoInput/NewTodoInput";
 import TodosFilters from "../TodosFilters/TodosFilters";
 import { useEffect, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { fetchTodos, selectAll } from "../../redux/features/todosSlice/todosThunks";
 import { removeError } from "../../redux/features/todosSlice/todosSlice";
 import { getAllTodosSelector } from "../../redux/selectors/todosSelectors";
 import { getCurrErrorSellector } from "../../redux/selectors/currErrorSelector";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 function TodoApp() {
-  const dispatch = useDispatch();
-  const todos = useSelector(getAllTodosSelector);
-  const currError = useSelector(getCurrErrorSellector);
 
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(getAllTodosSelector);
+  const currError = useAppSelector(getCurrErrorSellector);
+  
+  console.log('currError: ', currError)
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
@@ -36,7 +38,7 @@ function TodoApp() {
     <>
       {currError ? (
         <div className={styles.inputErr}>
-          {currError.name}: {currError.message}
+          {currError}
         </div>
       ) : null}
       <div className={styles.todosContainer}>

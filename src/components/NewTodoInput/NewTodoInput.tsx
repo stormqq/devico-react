@@ -1,16 +1,16 @@
 import { memo } from "react";
 import styles from "./NewTodoInput.module.css";
-import { useDispatch } from "react-redux";
 import { addTodo } from "../../redux/features/todosSlice/todosThunks";
+import { useAppDispatch } from "../../redux/hooks";
 
 function NewTodoInput() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const handleSubmitTodo = (e) => {
-    const text = e.target.value;
+  const handleSubmitTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
     if (e.key === "Enter" && text.trim() !== "" && text.length >= 3) {
-      dispatch(addTodo(text))
-      e.target.value = "";
+      dispatch(addTodo(text));
+      e.currentTarget.value = "";
     }
   };
 
@@ -18,8 +18,8 @@ function NewTodoInput() {
     <>
       <input
         className={styles.todoInput}
-        minLength="3"
-        maxLength="20"
+        minLength={3}
+        maxLength={20}
         type="text"
         placeholder="What needs to be done?"
         onKeyDown={handleSubmitTodo}

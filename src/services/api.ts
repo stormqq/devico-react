@@ -1,6 +1,7 @@
 import axios from "axios";
 
 class API {
+  private url: string;
   constructor() {
     this.url = "http://127.0.0.1:3000/";
   }
@@ -16,7 +17,7 @@ class API {
     }
   }
 
-  async addTodo(text) {
+  async addTodo(text: string) {
     try {
       const response = await axios.post(`${this.url}todos`, { text });
       return response.data;
@@ -27,7 +28,7 @@ class API {
     }
   }
 
-  async deleteTodo(id) {
+  async deleteTodo(id: number) {
     try {
       const response = await axios.delete(`${this.url}todos/${id}`);
       return response.data;
@@ -38,7 +39,7 @@ class API {
     }
   }
 
-  async toggleCompleted(id) {
+  async toggleCompleted(id: number) {
     try {
       const response = await axios.put(`${this.url}todos`, { id });
       return response.data;
@@ -49,7 +50,7 @@ class API {
     }
   }
 
-  async updateText(id, text) {
+  async updateText(id: number, text?: string) {
     try {
       const response = await axios.put(`${this.url}todos`, { id, text });
       return response.data;

@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const todosRouter = express.Router();
-const { getAllTodos, createTodo, deleteTodo, changeTodo } = require('../controllers/todosController');
+import { getAllTodos, createTodo, deleteTodo, changeTodo } from '../controllers/todosController.js';
 
 todosRouter.get('/', getAllTodos);
 todosRouter.post('/', createTodo);
 todosRouter.delete('/:id', deleteTodo);
 todosRouter.put('/', changeTodo);
 
-module.exports = todosRouter;
+export default todosRouter;

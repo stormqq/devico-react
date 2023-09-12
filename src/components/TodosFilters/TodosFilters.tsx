@@ -1,13 +1,13 @@
 import { memo, useMemo } from 'react'
 import styles from './TodosFilters.module.css'
-import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '../../redux/features/filterSlice/filterSlice';
 import { deleteCompletedTodos } from '../../redux/features/todosSlice/todosThunks';
 import { getAllTodosSelector } from '../../redux/selectors/todosSelectors';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 function TodosFilters() {
-  const dispatch = useDispatch();
-  const todos = useSelector(getAllTodosSelector);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(getAllTodosSelector);
 
   const totalActive = useMemo(() => {
     return todos.filter((todo) => !todo.completed).length;

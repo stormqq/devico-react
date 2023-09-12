@@ -1,1 +1,0 @@
-export const getFilterSelector = (state) => state.filter.filter;

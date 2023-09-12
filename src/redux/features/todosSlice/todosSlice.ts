@@ -1,11 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchTodos, addTodo, saveEditedTodo, deleteTodo, deleteCompletedTodos, selectAll} from './todosThunks';
+
+export interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+interface TodosState {
+  todos: Todo[];
+  currError: string | null;
+}
+
+const initialState: TodosState = {
+  todos: [],
+  currError: null,
+};
+
 const todoSlice = createSlice({
   name: 'todos',
-  initialState: {
-    todos: [],
-    currError: null,
-  },
+  initialState,
   reducers: {
     removeError(state) {
       state.currError = null;
@@ -17,6 +31,7 @@ const todoSlice = createSlice({
         state.todos = action.payload;
       })
       .addCase(addTodo.fulfilled, (state, action) => {
+        // console.log('action.payload ADD', action.payload)
         state.todos = action.payload;
       })
       .addCase(saveEditedTodo.fulfilled, (state, action) => {
@@ -34,7 +49,7 @@ const todoSlice = createSlice({
       .addMatcher(
         (action) => action.type.endsWith('/rejected'),
         (state, action) => {
-          state.currError = action.error.message;
+          state.currError = action.payload;
         }
       );
   },
