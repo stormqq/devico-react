@@ -1,10 +1,18 @@
 import { memo, useState } from "react";
 import styles from "./TodoItem.module.css";
-import { useDispatch } from "react-redux";
 import { deleteTodo, saveEditedTodo } from "../../redux/features/todosSlice/todosThunks";
+import { useAppDispatch } from "../../redux/hooks";
 
-function TodoItem({ todo }) {
-  const dispatch = useDispatch();
+interface TodoItemProps {
+  todo: {
+    id: number;
+    text: string;
+    completed: boolean;
+  };
+}
+
+function TodoItem({ todo }: TodoItemProps) {
+  const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
   const [inputError, setInputError] = useState("");
@@ -14,11 +22,11 @@ function TodoItem({ todo }) {
     setEditedText(todo.text);
   };
 
-  const handleChangeEditing = (e) => {
+  const handleChangeEditing = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
   };
 
-  const handleClickOutside = (e) => {
+  const handleClickOutside = () => {
     if (editedText.trim() !== "" && editedText.trim().length >= 3) {
       handleSave();
     } else {
@@ -39,7 +47,7 @@ function TodoItem({ todo }) {
     setInputError("");
   };
 
-  const handlePressEnter = (e) => {
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       if (editedText.trim() === "") {
         setInputError("TODO IS EMPTY");
@@ -91,9 +99,7 @@ function TodoItem({ todo }) {
       </div>
       <span className={styles.deleteButton} onClick={() => {
         console.log('deleting id: ', todo.id)
-        dispatch(deleteTodo({
-          id: todo.id
-        }))
+        dispatch(deleteTodo(todo.id))
       }}>
         ❌
       </span>

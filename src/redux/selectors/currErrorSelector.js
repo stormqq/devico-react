@@ -1,1 +1,0 @@
-export const getCurrErrorSellector = (state) => state.todos.currError;

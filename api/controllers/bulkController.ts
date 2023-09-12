@@ -1,10 +1,17 @@
-const db = require("../utils/db");
-const { handleErrors, queryAllTodos } = require("../utils/helpers");
+import db from "../utils/db.ts";
+import { handleErrors, queryAllTodos } from "../utils/helpers.ts";
+import { Request, Response } from "express";
 
-const selectAllTodos = async (req, res) => {
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+const selectAllTodos = async (req: Request, res: Response) => {
   try {
     const conn = await db.getConnection();
-    const todos = await conn.query("SELECT * FROM todos");
+    const todos: Todo[] = await queryAllTodos(conn);
 
     const allTodosCompleted = todos.every((todo) => todo.completed);
 
@@ -24,7 +31,7 @@ const selectAllTodos = async (req, res) => {
   }
 };
 
-const deleteAllCompletedTodos = async (req, res) => {
+const deleteAllCompletedTodos = async (req: Request, res: Response) => {
   try {
     const conn = await db.getConnection();
     const completedCount = await conn.query(
@@ -48,4 +55,4 @@ const deleteAllCompletedTodos = async (req, res) => {
   }
 };
 
-module.exports = { selectAllTodos, deleteAllCompletedTodos };
+export { selectAllTodos, deleteAllCompletedTodos };

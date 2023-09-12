@@ -1,4 +1,4 @@
-const mariadb = require("mariadb");
+import mariadb, { PoolConnection } from "mariadb";
 
 const pool = mariadb.createPool({
   host: "localhost",
@@ -7,8 +7,9 @@ const pool = mariadb.createPool({
   database: "todosapp",
 });
 
-module.exports = {
-  getConnection: async () => {
+
+export default {
+  getConnection: async (): Promise<PoolConnection> => {
     try {
       const conn = await pool.getConnection();
       return conn;

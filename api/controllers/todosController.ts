@@ -1,7 +1,9 @@
-const db = require("../utils/db");
-const { handleErrors, queryAllTodos } = require("../utils/helpers");
+import db from "../utils/db.js";
+import { handleErrors, queryAllTodos } from "../utils/helpers.js";
 
-const getAllTodos = async (req, res) => {
+import { Request, Response } from "express";
+
+const getAllTodos = async (req: Request, res: Response) => {
   try {
     const conn = await db.getConnection();
     const rows = await queryAllTodos(conn);
@@ -12,7 +14,7 @@ const getAllTodos = async (req, res) => {
   }
 };
 
-const createTodo = async (req, res) => {
+const createTodo = async (req: Request, res: Response) => {
   const { text } = req.body;
   if (!text || text.trim().length < 3 || text.trim().length >= 20) {
     return res.status(400).json({ message: "Invalid length" });
@@ -32,7 +34,7 @@ const createTodo = async (req, res) => {
   }
 };
 
-const deleteTodo = async (req, res) => {
+const deleteTodo = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   if (!id) {
@@ -57,7 +59,7 @@ const deleteTodo = async (req, res) => {
   }
 };
 
-const changeTodo = async (req, res) => {
+const changeTodo = async (req: Request, res: Response) => {
   const { id, text } = req.body;
 
   if (!id) {
@@ -90,9 +92,4 @@ const changeTodo = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllTodos,
-  createTodo,
-  deleteTodo,
-  changeTodo,
-};
+export { getAllTodos, createTodo, deleteTodo, changeTodo };
