@@ -1,7 +1,7 @@
 import { memo } from "react";
-import styles from "./NewTodoInput.module.css";
 import { addTodo } from "../../redux/features/todosSlice/todosThunks";
 import { useAppDispatch } from "../../redux/hooks";
+import { NewTodoInputField } from "../../styles/NewTodoInputStyles";
 
 function NewTodoInput() {
   const dispatch = useAppDispatch();
@@ -16,8 +16,7 @@ function NewTodoInput() {
 
   return (
     <>
-      <input
-        className={styles.todoInput}
+      <NewTodoInputField
         minLength={3}
         maxLength={20}
         type="text"

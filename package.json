@@ -14,7 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.15.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.15",
@@ -24,6 +25,11 @@
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.3.1",
+    "@mui/base": "^5.0.0-beta.15",
+    "@mui/material": "^5.14.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/cors": "^2.8.14",
@@ -31,6 +37,7 @@
     "@types/node": "^20.6.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "axios": "^1.5.0",
@@ -44,6 +51,7 @@
     "html-webpack-plugin": "^5.5.3",
     "mariadb": "^3.2.0",
     "nodemon": "^3.0.1",
+    "react-hook-form": "^7.46.1",
     "react-redux": "^8.1.2",
     "react-refresh": "^0.14.0",
     "style-loader": "^3.3.3",
@@ -53,6 +61,7 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
+    "yup": "^1.2.0",
     "zustand": "^4.4.1"
   }
 }

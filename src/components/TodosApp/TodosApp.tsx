@@ -8,6 +8,8 @@ import { removeError } from "../../redux/features/todosSlice/todosSlice";
 import { getAllTodosSelector } from "../../redux/selectors/todosSelectors";
 import { getCurrErrorSellector } from "../../redux/selectors/currErrorSelector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { CurrError, SelectAllButton, TodosContainer } from "../../styles/TodosAppStyles";
+
 function TodoApp() {
 
   const dispatch = useAppDispatch();
@@ -37,25 +39,20 @@ function TodoApp() {
   return (
     <>
       {currError ? (
-        <div className={styles.inputErr}>
-          {currError}
-        </div>
+        <CurrError>{currError}</CurrError>
       ) : null}
-      <div className={styles.todosContainer}>
+      <TodosContainer>
         {todos.length > 0 ? (
-          <span
-            className={`${styles.selectAll} ${
-              allTodosCompleted && styles.selectedAll
-            }`}
+          <SelectAllButton allTodosCompleted={allTodosCompleted}
             onClick={() => dispatch(selectAll())}
           >
             ❯
-          </span>
+          </SelectAllButton>
         ) : null}
         <NewTodoInput />
         <TodoList />
         {todos.length > 0 ? <TodosFilters /> : null}
-      </div>
+      </TodosContainer>
     </>
   );
 }

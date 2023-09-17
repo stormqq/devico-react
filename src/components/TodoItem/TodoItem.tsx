@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
-import styles from "./TodoItem.module.css";
 import { deleteTodo, saveEditedTodo } from "../../redux/features/todosSlice/todosThunks";
 import { useAppDispatch } from "../../redux/hooks";
+import { CheckNameContainer, DeleteButton, EditingInput, InputError, TodoCheckbox, TodoItemText, TodoListItem } from "../../styles/TodosListItemStyles";
 
 interface TodoItemProps {
   todo: {
@@ -59,23 +59,24 @@ function TodoItem({ todo }: TodoItemProps) {
     }
   };
 
+  const handleChangeCheckbox = () => {
+    dispatch(saveEditedTodo({
+      id: todo.id,
+    }));
+  };
+
+  const handleDeleteTodo = () => {
+    dispatch(deleteTodo(todo.id));
+  };
+
   console.log("TodoItem rendered", todo.id);
   return (
-    <li className={styles.todoItem}>
-      <div className={styles.checkName}>
-        <input
-          type="checkbox"
-          checked={todo.completed}
-          onChange={() => {
-            console.log('todo.id: ', todo.id);
-            dispatch(saveEditedTodo({
-              id: todo.id,
-            }));
-          }}
-        />
+    <TodoListItem >
+      <CheckNameContainer>
+        <TodoCheckbox disableRipple checked={todo.completed} onChange={handleChangeCheckbox} />
         {isEditing ? (
-          <input
-            type="text"
+          <EditingInput
+            isError={inputError}
             value={editedText}
             minLength={3}
             maxLength={20}
@@ -83,27 +84,20 @@ function TodoItem({ todo }: TodoItemProps) {
             onChange={handleChangeEditing}
             onBlur={handleClickOutside}
             onKeyDown={handlePressEnter}
-            className={`${styles.editInput} ${inputError && styles.inputError}`}
           />
         ) : (
-          <span
-            className={`${todo.completed && styles.completed}`}
-            onDoubleClick={handleEdit}
-          >
+          <TodoItemText completed={todo.completed} onDoubleClick={handleEdit}>
             {todo.text}
-          </span>
+          </TodoItemText>
         )}
         {inputError && (
-          <span className={styles.inputErrorMessage}>{inputError}</span>
+          <InputError>{inputError}</InputError>
         )}
-      </div>
-      <span className={styles.deleteButton} onClick={() => {
-        console.log('deleting id: ', todo.id)
-        dispatch(deleteTodo(todo.id))
-      }}>
+      </CheckNameContainer>
+      <DeleteButton disableRipple onClick={handleDeleteTodo}>
         ❌
-      </span>
-    </li>
+      </DeleteButton>
+    </TodoListItem>
   );
 }
 
