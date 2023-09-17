@@ -1,9 +1,10 @@
 import { memo, useMemo } from 'react';
 import TodoItem from '../TodoItem/TodoItem';
-import styles from './TodoList.module.css';
 import { getAllTodosSelector } from '../../redux/selectors/todosSelectors';
 import { getFilterSelector } from '../../redux/selectors/filterSelectors';
 import { useAppSelector } from '../../redux/hooks';
+import { List, ListItem } from '@mui/material';
+import { TodosList } from '../../styles/TodosListStyles';
 
 function TodoList() {
   const todos = useAppSelector(getAllTodosSelector);
@@ -23,14 +24,14 @@ function TodoList() {
   }, [todos, currFilter]);
   
     return (
-    <ul className={styles.todoList}>
+    <TodosList>
       {filteredTodos.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
         />
       ))}
-    </ul>
+    </TodosList>
   );
 }
 

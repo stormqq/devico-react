@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+form input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+form button {
+    border: 0;
+    border-radius: 5px;
+    height: 40px;
+    font-size: 14px;
+    background: tomato;
+    color: #fff;
+    cursor: pointer;
+}
+
+form p {
+    font-size: 12px;
+    color: red;
+}

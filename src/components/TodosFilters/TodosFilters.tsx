@@ -1,9 +1,9 @@
 import { memo, useMemo } from 'react'
-import styles from './TodosFilters.module.css'
 import { setFilter } from '../../redux/features/filterSlice/filterSlice';
 import { deleteCompletedTodos } from '../../redux/features/todosSlice/todosThunks';
 import { getAllTodosSelector } from '../../redux/selectors/todosSelectors';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { FiltersButton, FiltersButtonClearCompleted, FiltersButtonsContainer, FiltersContainer, FiltersText } from '../../styles/TodosFiltersStyles';
 
 function TodosFilters() {
   const dispatch = useAppDispatch();
@@ -20,15 +20,15 @@ function TodosFilters() {
   , [todos]);
   
   return (
-    <div className={styles.filtersContainer}>
-        <span className={styles.totalActive}>{totalActive} items left</span>
-        <div className={styles.filtersButtons}>
-          <button onClick={() => dispatch(setFilter(''))}>All</button>
-          <button onClick={() => dispatch(setFilter('active'))}>Active</button>
-          <button onClick={() => dispatch(setFilter('completed'))}>Completed</button>
-        </div>
-        <button className={`${styles.clearCompleted} ${isSomeCompleted && styles.clearCompletedShow}`} onClick={() => dispatch(deleteCompletedTodos())}>Clear completed</button>
-    </div>
+    <FiltersContainer>
+        <FiltersText>{totalActive} items left</FiltersText>
+        <FiltersButtonsContainer>
+          <FiltersButton onClick={() => dispatch(setFilter(''))}>All</FiltersButton>
+          <FiltersButton onClick={() => dispatch(setFilter('active'))}>Active</FiltersButton>
+          <FiltersButton onClick={() => dispatch(setFilter('completed'))}>Completed</FiltersButton>
+        </FiltersButtonsContainer>
+        <FiltersButtonClearCompleted isSomeCompleted={isSomeCompleted} onClick={() => dispatch(deleteCompletedTodos())}>Clear completed</FiltersButtonClearCompleted>
+    </FiltersContainer>
   )
 }
 

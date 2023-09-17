@@ -1,13 +1,24 @@
+import { Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import TodosApp from "./components/TodosApp/TodosApp";
+import { useAppSelector } from "./redux/hooks";
+import { AppContainer, AppTitle } from "./styles/AppGeneralStyles";
+
+// login req
+// user: id: uuid, email, pass
  
 function App() {
+  const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
+  if (!isAuthorized) {
+    return <Navigate to="/" />;
+  } else {
   return (
-    <div className="container">
-      <h1 className="logo">todos</h1>
+    <AppContainer>
+      <AppTitle>todos</AppTitle>
       <TodosApp />
-    </div>
+    </AppContainer>
   );
+  }
 }
 
 export default App;
