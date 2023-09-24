@@ -8,7 +8,7 @@ import { FiltersButton, FiltersButtonClearCompleted, FiltersButtonsContainer, Fi
 function TodosFilters() {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(getAllTodosSelector);
-
+  const user = useAppSelector((state) => state.auth.user);
   const totalActive = useMemo(() => {
     return todos.filter((todo) => !todo.completed).length;
   }
@@ -27,7 +27,7 @@ function TodosFilters() {
           <FiltersButton onClick={() => dispatch(setFilter('active'))}>Active</FiltersButton>
           <FiltersButton onClick={() => dispatch(setFilter('completed'))}>Completed</FiltersButton>
         </FiltersButtonsContainer>
-        <FiltersButtonClearCompleted isSomeCompleted={isSomeCompleted} onClick={() => dispatch(deleteCompletedTodos())}>Clear completed</FiltersButtonClearCompleted>
+        <FiltersButtonClearCompleted isSomeCompleted={isSomeCompleted} onClick={() => user && dispatch(deleteCompletedTodos(user.uid))}>Clear completed</FiltersButtonClearCompleted>
     </FiltersContainer>
   )
 }

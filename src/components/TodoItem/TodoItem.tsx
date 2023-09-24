@@ -1,11 +1,11 @@
 import { memo, useState } from "react";
 import { deleteTodo, saveEditedTodo } from "../../redux/features/todosSlice/todosThunks";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { CheckNameContainer, DeleteButton, EditingInput, InputError, TodoCheckbox, TodoItemText, TodoListItem } from "../../styles/TodosListItemStyles";
 
 interface TodoItemProps {
   todo: {
-    id: number;
+    id: string;
     text: string;
     completed: boolean;
   };
@@ -16,6 +16,12 @@ function TodoItem({ todo }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
   const [inputError, setInputError] = useState("");
+
+  const user = useAppSelector((state) => state.auth.user);
+
+  if (!user) {
+    return null;
+  }
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -40,10 +46,13 @@ function TodoItem({ todo }: TodoItemProps) {
     setIsEditing(false);
     console.log('todo id: ', todo.id);
     console.log('editedText: ', editedText);
+    if (user) {
     dispatch(saveEditedTodo({
       id: todo.id,
-      text: editedText
+      text: editedText,
+      uid: user.uid
     }));
+  }
     setInputError("");
   };
 
@@ -60,13 +69,20 @@ function TodoItem({ todo }: TodoItemProps) {
   };
 
   const handleChangeCheckbox = () => {
+    console.log('from handleChangeCheckbox: ', todo.id, user.uid)
+    if (user) {
     dispatch(saveEditedTodo({
       id: todo.id,
+      uid: user.uid,
     }));
+  }
   };
 
   const handleDeleteTodo = () => {
-    dispatch(deleteTodo(todo.id));
+    dispatch(deleteTodo({
+      id: todo.id,
+      uid: user.uid
+    }));
   };
 
   console.log("TodoItem rendered", todo.id);

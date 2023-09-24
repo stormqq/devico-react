@@ -1,4 +1,3 @@
-import styles from "./TodoApp.module.css";
 import TodoList from "../TodoList/TodoList";
 import NewTodoInput from "../NewTodoInput/NewTodoInput";
 import TodosFilters from "../TodosFilters/TodosFilters";
@@ -9,16 +8,22 @@ import { getAllTodosSelector } from "../../redux/selectors/todosSelectors";
 import { getCurrErrorSellector } from "../../redux/selectors/currErrorSelector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { CurrError, SelectAllButton, TodosContainer } from "../../styles/TodosAppStyles";
+import { getUserByToken } from "../../redux/features/authSlice/authThunks";
 
 function TodoApp() {
-
   const dispatch = useAppDispatch();
   const todos = useAppSelector(getAllTodosSelector);
   const currError = useAppSelector(getCurrErrorSellector);
-  
-  console.log('currError: ', currError)
+  const user = useAppSelector((state) => state.auth.user);
+
   useEffect(() => {
-    dispatch(fetchTodos());
+    const fetchData = async () => {
+      if (!user) {
+      await dispatch(getUserByToken());
+      }
+      await dispatch(fetchTodos());
+    };
+    fetchData();
   }, []);
   
   useEffect(() => {
@@ -41,10 +46,11 @@ function TodoApp() {
       {currError ? (
         <CurrError>{currError}</CurrError>
       ) : null}
+      {user ? (
       <TodosContainer>
         {todos.length > 0 ? (
           <SelectAllButton allTodosCompleted={allTodosCompleted}
-            onClick={() => dispatch(selectAll())}
+            onClick={() => dispatch(selectAll(user.uid))}
           >
             ❯
           </SelectAllButton>
@@ -53,6 +59,7 @@ function TodoApp() {
         <TodoList />
         {todos.length > 0 ? <TodosFilters /> : null}
       </TodosContainer>
+      ) : null}
     </>
   );
 }

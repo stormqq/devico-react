@@ -1,15 +1,22 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import TodosApp from "./components/TodosApp/TodosApp";
-import { useAppSelector } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { AppContainer, AppTitle } from "./styles/AppGeneralStyles";
+import { useEffect } from "react";
+import { getUserByToken } from "./redux/features/authSlice/authThunks";
 
 // login req
 // user: id: uuid, email, pass
+
+// access token, refresh token, jwt
+
+
+// mui tables
  
 function App() {
-  const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
-  if (!isAuthorized) {
+
+  if (localStorage.getItem("accessToken") === null) {
     return <Navigate to="/" />;
   } else {
   return (

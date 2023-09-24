@@ -3,7 +3,6 @@ import App from "./App";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import TodoApp from "./components/TodosApp/TodosApp.tsx";
 import Login from "./components/Login/Login.tsx";
 import Register from "./components/Register/Register.tsx";
 import { CssBaseline } from "@mui/material";

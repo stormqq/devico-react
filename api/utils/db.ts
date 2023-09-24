@@ -7,7 +7,6 @@ const pool = mariadb.createPool({
   database: "todosapp",
 });
 
-
 export default {
   getConnection: async (): Promise<PoolConnection> => {
     try {
