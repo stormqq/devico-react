@@ -1,18 +1,23 @@
 import { memo } from "react";
 import { addTodo } from "../../redux/features/todosSlice/todosThunks";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NewTodoInputField } from "../../styles/NewTodoInputStyles";
 
 function NewTodoInput() {
   const dispatch = useAppDispatch();
-
+  const user = useAppSelector((state) => state.auth.user);
   const handleSubmitTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
-    if (e.key === "Enter" && text.trim() !== "" && text.length >= 3) {
-      dispatch(addTodo(text));
+    if (e.key === "Enter" && text.trim() !== "" && text.length >= 3 && user) {
+      dispatch(addTodo({
+        text,
+        uid: user.uid,
+      }));
+
       e.currentTarget.value = "";
     }
   };
+
 
   return (
     <>

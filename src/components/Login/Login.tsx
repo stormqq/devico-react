@@ -2,9 +2,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setAuth } from "../../redux/features/authSlice/authSlice";
 import { AuthForm, AuthFormContainer } from "../../styles/FormStyles";
+import { loginUser } from "../../redux/features/authSlice/authThunks";
 
 interface UserInputs {
     login: string;
@@ -28,13 +29,13 @@ function Login() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const handleAuth = (data: UserInputs) => {
-    if (data.login === "admin" && data.password === "test123") {
-        dispatch(setAuth(true)) 
+  const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
+  const authError = useAppSelector((state) => state.auth.authError);
+  const handleAuth = async (data: UserInputs) => {
+    await dispatch(loginUser(data));
+    if (!authError) {
       navigate("/todos");
     }
-    reset()
   };
 
   return (

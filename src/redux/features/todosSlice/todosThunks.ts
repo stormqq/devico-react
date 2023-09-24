@@ -1,45 +1,60 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../services/api";
 import { Todo } from "./todosSlice";
-// import { Todo } from "../../../types/User";
 
 const api = new API();
 
-export const fetchTodos = createAsyncThunk<Todo[]>("todos/fetchTodos", async () => {
-  const res = await api.getTodos();
-  console.log('fetch result from API: ', res)
-  return res;
-});
-
-export const addTodo = createAsyncThunk<Todo[], string>("todos/addTodo", async (text, {rejectWithValue}) => {
-  const res = await api.addTodo(text);
-  if (res.error) {
-    return rejectWithValue(res.error.message);
-  }
-  return res;
-});
-
-export const saveEditedTodo = createAsyncThunk<Todo[], {id: number, text?: string}>(
-  "todos/updateTodo",
-  async ({ id, text }) => {
-    const res = await api.updateText(id, text);
+export const fetchTodos = createAsyncThunk<Todo[]>(
+  "todos/fetchTodos",
+  async () => {
+    const res = await api.getTodos();
+    console.log("fetch result from API: ", res);
     return res;
   }
-);  
+);
 
-export const deleteTodo = createAsyncThunk<Todo[], number>("todos/deleteTodo", async (id, {rejectWithValue}) => {
-  console.log('passed into delete: ', id)
-  const res = await api.deleteTodo(id);
+export const addTodo = createAsyncThunk<
+  Todo[],
+  {
+    text: string;
+    uid: string;
+  }
+>("todos/addTodo", async ({ text, uid }, { rejectWithValue }) => {
+  const res = await api.addTodo(text, uid);
   if (res.error) {
     return rejectWithValue(res.error.message);
   }
   return res;
 });
 
-export const deleteCompletedTodos = createAsyncThunk<Todo[]>(
+export const saveEditedTodo = createAsyncThunk<
+  Todo[],
+  { id: string; text?: string; uid?: string }
+>("todos/updateTodo", async ({ id, text, uid }) => {
+  console.log('TODOS CHUNK CHANGE TODO: ', id, text, uid,)
+  const res = await api.updateText(id, text, uid);
+  return res;
+});
+
+export const deleteTodo = createAsyncThunk<
+  Todo[],
+  {
+    id: string;
+    uid: string;
+  }
+>("todos/deleteTodo", async ({ id, uid }, { rejectWithValue }) => {
+  console.log("passed into delete: ", id);
+  const res = await api.deleteTodo(id, uid);
+  if (res.error) {
+    return rejectWithValue(res.error.message);
+  }
+  return res;
+});
+
+export const deleteCompletedTodos = createAsyncThunk<Todo[], string>(
   "todos/deleteCompletedTodos",
-  async (_, { rejectWithValue }) => {
-    const res = await api.deleteCompleted();
+  async (uid, { rejectWithValue }) => {
+    const res = await api.deleteCompleted(uid);
     if (res.error) {
       return rejectWithValue(res.error.message);
     }
@@ -47,15 +62,13 @@ export const deleteCompletedTodos = createAsyncThunk<Todo[]>(
   }
 );
 
-export const selectAll = createAsyncThunk<Todo[]>(
+export const selectAll = createAsyncThunk<Todo[], string>(
   "todos/selectAll",
-  async (_, {rejectWithValue}) => {
-    const res = await api.selectAll();
+  async (uid, { rejectWithValue }) => {
+    const res = await api.selectAll(uid);
     if (res.error) {
       return rejectWithValue(res.error.message);
     }
     return res;
   }
 );
-
-

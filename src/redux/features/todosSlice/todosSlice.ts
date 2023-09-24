@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchTodos, addTodo, saveEditedTodo, deleteTodo, deleteCompletedTodos, selectAll} from './todosThunks';
 
 export interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }

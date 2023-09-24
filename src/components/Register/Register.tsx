@@ -2,20 +2,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setAuth } from "../../redux/features/authSlice/authSlice";
 import { styled } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { AuthForm, AuthFormContainer, HaveAccountButton } from "../../styles/FormStyles";
-
-const CustomInput = styled(TextField)({
-    width: '100%',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-    '.Mui-error': {
-        border: '4px solid red'
-    }
-})
+import { registerUser } from "../../redux/features/authSlice/authThunks";
 
 interface RegisterInput {
     email: string;
@@ -43,13 +35,14 @@ function Register() {
     
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    
+    const authError = useAppSelector((state) => state.auth.authError);
 
-    const handleRegister = (data: RegisterInput) => {
-        if (data.login === "admin" && data.password === "test123") {
-            dispatch(setAuth(true))
+    const handleRegister = async (data: RegisterInput) => {
+        await dispatch(registerUser(data));
+        if (!authError) {
             navigate("/todos");
         }
-        reset()
     };
 
     const handleHaveAccount = () => {
