@@ -1,20 +1,16 @@
-import mariadb, { PoolConnection } from "mariadb";
-
-const pool = mariadb.createPool({
-  host: "localhost",
-  user: "root",
-  password: "test123",
-  database: "todosapp",
-});
+import mongoose, { ConnectOptions } from "mongoose";
 
 export default {
-  getConnection: async (): Promise<PoolConnection> => {
+  connectMongo: async () => {
     try {
-      const conn = await pool.getConnection();
-      return conn;
+      await mongoose.connect(process.env.MONGODB_URI!, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      } as ConnectOptions);
+      console.log("MongoDB connected");
     } catch (err) {
-      console.error("Error getting a database connection:", err);
+      console.error("Error connecting to MongoDB:", err);
       throw err;
     }
-  },
+  }
 };

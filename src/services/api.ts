@@ -1,6 +1,4 @@
 import axios from "axios";
-import { nanoid } from "nanoid";
-
 
 axios.interceptors.request.use((config) => {
   const accessToken = localStorage.getItem("accessToken");
@@ -41,9 +39,9 @@ class API {
     }
   }
 
-  async deleteTodo(id: string, uid: string) {
+  async deleteTodo(_id: string) {
     try {
-      const response = await axios.delete(`${this.url}todos/${id}`, { data: { uid: uid }});
+      const response = await axios.delete(`${this.url}todos/${_id}`);
       return response.data;
     } catch (error) {
       return {

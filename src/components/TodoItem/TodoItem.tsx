@@ -1,11 +1,11 @@
 import { memo, useState } from "react";
 import { deleteTodo, saveEditedTodo } from "../../redux/features/todosSlice/todosThunks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { CheckNameContainer, DeleteButton, EditingInput, InputError, TodoCheckbox, TodoItemText, TodoListItem } from "../../styles/TodosListItemStyles";
+import { DeleteButton, EditingInput, InputError, TodoCheckbox, TodoItemText, TodoListItem, TodosItemTableCell, TodosItemTableRow } from "../../styles/TodosListItemStyles";
 
 interface TodoItemProps {
   todo: {
-    id: string;
+    _id: string;
     text: string;
     completed: boolean;
   };
@@ -44,13 +44,12 @@ function TodoItem({ todo }: TodoItemProps) {
 
   const handleSave = () => {
     setIsEditing(false);
-    console.log('todo id: ', todo.id);
+    console.log('todo id: ', todo._id);
     console.log('editedText: ', editedText);
     if (user) {
     dispatch(saveEditedTodo({
-      id: todo.id,
+      id: todo._id,
       text: editedText,
-      uid: user.uid
     }));
   }
     setInputError("");
@@ -69,10 +68,10 @@ function TodoItem({ todo }: TodoItemProps) {
   };
 
   const handleChangeCheckbox = () => {
-    console.log('from handleChangeCheckbox: ', todo.id, user.uid)
+    // console.log('from handleChangeCheckbox: ', todo.id, user.uid)
     if (user) {
     dispatch(saveEditedTodo({
-      id: todo.id,
+      id: todo._id,
       uid: user.uid,
     }));
   }
@@ -80,15 +79,14 @@ function TodoItem({ todo }: TodoItemProps) {
 
   const handleDeleteTodo = () => {
     dispatch(deleteTodo({
-      id: todo.id,
-      uid: user.uid
+      id: todo._id,
     }));
   };
 
-  console.log("TodoItem rendered", todo.id);
+  console.log("TodoItem rendered", todo._id);
   return (
-    <TodoListItem >
-      <CheckNameContainer>
+    <TodosItemTableRow>
+      <TodosItemTableCell>
         <TodoCheckbox disableRipple checked={todo.completed} onChange={handleChangeCheckbox} />
         {isEditing ? (
           <EditingInput
@@ -109,11 +107,13 @@ function TodoItem({ todo }: TodoItemProps) {
         {inputError && (
           <InputError>{inputError}</InputError>
         )}
-      </CheckNameContainer>
+      </TodosItemTableCell>
+      <TodosItemTableCell>
       <DeleteButton disableRipple onClick={handleDeleteTodo}>
         ❌
       </DeleteButton>
-    </TodoListItem>
+      </TodosItemTableCell>
+    </TodosItemTableRow>
   );
 }
 

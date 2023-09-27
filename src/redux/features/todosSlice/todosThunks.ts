@@ -39,12 +39,11 @@ export const saveEditedTodo = createAsyncThunk<
 export const deleteTodo = createAsyncThunk<
   Todo[],
   {
-    id: string;
-    uid: string;
+    id: string
   }
->("todos/deleteTodo", async ({ id, uid }, { rejectWithValue }) => {
+>("todos/deleteTodo", async ({ id }, { rejectWithValue }) => {
   console.log("passed into delete: ", id);
-  const res = await api.deleteTodo(id, uid);
+  const res = await api.deleteTodo(id);
   if (res.error) {
     return rejectWithValue(res.error.message);
   }

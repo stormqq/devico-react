@@ -1,5 +1,5 @@
 import { Button } from "@mui/base";
-import { Box, Typography, styled } from "@mui/material";
+import { Box, TableSortLabel, Typography, styled } from "@mui/material";
 
 const FiltersContainer = styled(Box)({
     display: "flex",
@@ -28,13 +28,11 @@ const FiltersButton = styled(Button)({
     cursor: "pointer",
     background: "transparent",
     color: "#777",
-    "&:hover": {
-        background: "#eee",
-    },
 })
 
 const FiltersButtonClearCompleted = styled(FiltersButton)(({isSomeCompleted}: {isSomeCompleted: boolean}) => ({
     visibility: isSomeCompleted ? "visible" : "hidden",
 }))
+
 
 export { FiltersContainer, FiltersText, FiltersButtonsContainer, FiltersButton, FiltersButtonClearCompleted };

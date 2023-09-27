@@ -1,15 +1,7 @@
-import { PoolConnection } from "mariadb";
 import { NextFunction, Response, Request } from "express";
 import jwt from "jsonwebtoken";
-interface User {
-  uid: string;
-  email: string;
-  login: string;
-  password: string;
-}
-
 interface TokenPayload {
-  uid: string;
+  userId: string;
   email: string;
   login: string;
 }
@@ -17,15 +9,6 @@ interface TokenPayload {
 export const handleErrors = (res: Response, err: Error | unknown): void => {
   console.error(err);
   res.status(500).json({ message: "Internal Server Error" });
-};
-
-export const queryAllTodos = async (conn: PoolConnection, uid: string) => {
-  try {
-    const rows = await conn.query("SELECT * FROM todos WHERE uid = ?", [uid]);
-    return rows;
-  } catch (err) {
-    throw err;
-  }
 };
 
 export const authenticateToken = async (
@@ -54,6 +37,7 @@ export const authenticateToken = async (
         accessToken,
         process.env.ACCESS_TOKEN_SECRET || ""
       );
+      console.log('ACCESS VALID TOKEN DECODED: ', decoded)
       req.body.tokens = { accessToken, refreshToken };
       req.body.user = decoded;
     }
@@ -98,7 +82,7 @@ const refreshTokens = async (
 
     const newAccessToken = jwt.sign(
       {
-        uid: decoded.uid,
+        userId: decoded.userId,
         email: decoded.email,
         login: decoded.login,
       },
@@ -108,7 +92,7 @@ const refreshTokens = async (
 
     const newRefreshToken = jwt.sign(
       {
-        uid: decoded.uid,
+        userId: decoded.userId,
         email: decoded.email,
         login: decoded.login,
       },
@@ -122,24 +106,24 @@ const refreshTokens = async (
   }
 };
 
-export const generateTokens = (user: User) => {
+export const generateTokens = (newUser: TokenPayload) => {
   const accessToken = jwt.sign(
     {
-      uid: user.uid,
-      email: user.email,
-      login: user.login,
+      userId: newUser.userId,
+      email: newUser.email,
+      login: newUser.login,
     },
     process.env.ACCESS_TOKEN_SECRET || "",
     {
-      expiresIn: "10s",
+      expiresIn: "20s",
     }
   );
 
   const refreshToken = jwt.sign(
     {
-      uid: user.uid,
-      email: user.email,
-      login: user.login,
+      userId: newUser.userId,
+      email: newUser.email,
+      login: newUser.login,
     },
     process.env.REFRESH_TOKEN_SECRET || "",
     {

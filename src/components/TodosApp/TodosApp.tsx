@@ -2,30 +2,41 @@ import TodoList from "../TodoList/TodoList";
 import NewTodoInput from "../NewTodoInput/NewTodoInput";
 import TodosFilters from "../TodosFilters/TodosFilters";
 import { useEffect, useMemo } from "react";
-import { fetchTodos, selectAll } from "../../redux/features/todosSlice/todosThunks";
+import {
+  fetchTodos,
+  selectAll,
+} from "../../redux/features/todosSlice/todosThunks";
 import { removeError } from "../../redux/features/todosSlice/todosSlice";
 import { getAllTodosSelector } from "../../redux/selectors/todosSelectors";
 import { getCurrErrorSellector } from "../../redux/selectors/currErrorSelector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { CurrError, SelectAllButton, TodosContainer } from "../../styles/TodosAppStyles";
+import {
+  CurrError,
+  SelectAllButton,
+  TodosHeaderCell,
+  TodosHeaderRow,
+  TodosTableContainer,
+} from "../../styles/TodosAppStyles";
 import { getUserByToken } from "../../redux/features/authSlice/authThunks";
+import { Table, TableBody, TableFooter, TableHead } from "@mui/material";
 
 function TodoApp() {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(getAllTodosSelector);
   const currError = useAppSelector(getCurrErrorSellector);
   const user = useAppSelector((state) => state.auth.user);
+  console.log(todos);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) {
-      await dispatch(getUserByToken());
+        await dispatch(getUserByToken());
       }
       await dispatch(fetchTodos());
     };
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     if (currError) {
       const errorTimeout = setTimeout(() => {
@@ -43,22 +54,33 @@ function TodoApp() {
 
   return (
     <>
-      {currError ? (
-        <CurrError>{currError}</CurrError>
-      ) : null}
+      {currError ? <CurrError>{currError}</CurrError> : null}
       {user ? (
-      <TodosContainer>
-        {todos.length > 0 ? (
-          <SelectAllButton allTodosCompleted={allTodosCompleted}
-            onClick={() => dispatch(selectAll(user.uid))}
-          >
-            ❯
-          </SelectAllButton>
-        ) : null}
-        <NewTodoInput />
-        <TodoList />
-        {todos.length > 0 ? <TodosFilters /> : null}
-      </TodosContainer>
+        <TodosTableContainer>
+          <Table>
+            <TableHead>
+              <TodosHeaderRow>
+                <TodosHeaderCell>
+                  <SelectAllButton
+                    allTodosCompleted={allTodosCompleted}
+                    onClick={() => dispatch(selectAll(user.uid))}
+                  >
+                    ❯
+                  </SelectAllButton>
+                </TodosHeaderCell>
+                <TodosHeaderCell>
+                  <NewTodoInput />
+                </TodosHeaderCell>
+              </TodosHeaderRow>
+            </TableHead>
+            <TableBody>
+              <TodoList />
+            </TableBody>
+            <TableFooter>
+              {todos.length > 0 ? <TodosFilters /> : null}
+            </TableFooter>
+          </Table>
+        </TodosTableContainer>
       ) : null}
     </>
   );
